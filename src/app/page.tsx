@@ -1,103 +1,212 @@
-import Image from "next/image";
+"use client";
+
+import Threads from "@/Backgrounds/Threads/Threads";
+import CardSwap, { Card } from "@/Components/CardSwap/CardSwap";
+import ChatBot from "@/Components/ChatBot";
+import SplashScreen from "@/Components/SplashScreen";
+import BlurText from "@/TextAnimations/BlurText/BlurText";
+import TrueFocus from "@/TextAnimations/TrueFocus/TrueFocus";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { BiLogoTypescript } from "react-icons/bi";
+import { RiNextjsFill, RiReactjsFill, RiTailwindCssFill } from "react-icons/ri";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showMain, setShowMain] = useState<boolean>(false);
+  const homeRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const botRef = useRef<HTMLDivElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    if (!showMain) return;
+
+    const sections = [
+      { id: "home", ref: homeRef },
+      { id: "about", ref: aboutRef },
+      { id: "bot", ref: botRef },
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute("id");
+            if (sectionId && window.location.hash !== `#${sectionId}`) {
+              history.replaceState(null, "", `#${sectionId}`);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+
+    sections.forEach(({ ref }) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => {
+      sections.forEach(({ ref }) => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
+  }, [showMain]);
+
+  return (
+    <>
+      {!showMain && <SplashScreen onFinish={() => setShowMain(true)} />}
+      {showMain && (
+        <>
+          <div
+            id="home"
+            ref={homeRef}
+            style={{
+              width: "100%",
+              height: "650px",
+              position: "relative",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="absolute top-[20%] left-1/2 transform -translate-x-1/2 flex flex-col gap-5 z-20 items-center w-full">
+              <BlurText
+                text="Ahmad Mufid Risqi"
+                delay={100}
+                animateBy="letters"
+                direction="top"
+                className="text-5xl lg:text-[5rem] font-bold text-white"
+              />
+              <TrueFocus
+                sentence="Developer Designer Creator"
+                manualMode
+                blurAmount={5}
+                borderColor="green"
+                animationDuration={0.5}
+              />
+            </div>
+            <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+          </div>
+          <div
+            id="about"
+            ref={aboutRef}
+            className="w-full grid grid-cols-1 lg:grid-cols-2 items-center px-10 mt-16"
+            style={{ height: "600px", position: "relative" }}
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <div className="flex flex-col gap-5">
+              <span className="flex items-center gap-3">
+                <BlurText
+                  text="About This Project"
+                  delay={100}
+                  animateBy="letters"
+                  direction="top"
+                  className="text-xl lg:text-5xl font-semibold text-white"
+                />
+                <motion.div
+                  initial={{ width: "0%" }}
+                  whileInView={{ width: "160px" }}
+                  className="w-40 h-0.5 bg-muted-foreground mt-4"
+                />
+              </span>
+              <p className="text-muted-foreground">
+                Chatbot untuk mata kuliah Information Retrieval (IR) ini
+                merupakan proyek yang dirancang untuk membantu pengguna dalam
+                mencari informasi dari sebuah dataset menggunakan pertanyaan
+                dalam bentuk bahasa alami. Chatbot ini dibangun dengan
+                menerapkan konsep-konsep dasar IR seperti tokenisasi,
+                penghapusan stopword, stemming, dan perhitungan TF-IDF untuk
+                menentukan relevansi dokumen terhadap query yang diberikan.
+                Proyek ini bertujuan untuk mengintegrasikan teori IR ke dalam
+                aplikasi nyata yang interaktif, serta memberikan pengalaman
+                pencarian informasi yang efisien dan intuitif bagi pengguna.
+              </p>
+              <span className="flex items-center gap-3">
+                <BlurText
+                  text="Tech Stack"
+                  delay={100}
+                  animateBy="letters"
+                  direction="top"
+                  className="text-xl lg:text-3xl font-semibold text-white mt-5"
+                />
+                <motion.div
+                  initial={{ width: "0%" }}
+                  whileInView={{ width: "80px" }}
+                  className="w-20 h-0.5 bg-muted-foreground mt-6"
+                />
+              </span>
+              <div className="flex items-center gap-4">
+                <RiReactjsFill className="w-10 h-10 text-blue-300" />
+                <RiNextjsFill className="w-10 h-10" />
+                <BiLogoTypescript className="w-10 h-10 text-blue-500" />
+                <RiTailwindCssFill className="w-10 h-10 text-cyan-300" />
+              </div>
+            </div>
+            <CardSwap
+              cardDistance={60}
+              verticalDistance={70}
+              delay={5000}
+              pauseOnHover={false}
+            >
+              <Card className="border-4">
+                <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
+                  <RiNextjsFill />
+                  Next JS
+                </h3>
+                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-black">
+                  <span className="text-4xl font-extrabold text-transparent stroke-text">
+                    NEXT JS
+                  </span>
+                </div>
+              </Card>
+              <Card className="border-4">
+                <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
+                  <RiTailwindCssFill />
+                  Tailwind CSS
+                </h3>
+                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-cyan-400">
+                  <span className="text-4xl font-extrabold text-transparent stroke-text">
+                    TAILWIND CSS
+                  </span>
+                </div>
+              </Card>
+              <Card className="border-4">
+                <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
+                  <BiLogoTypescript />
+                  TypeScript
+                </h3>
+                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-blue-400">
+                  <span className="text-4xl font-extrabold text-transparent stroke-text">
+                    TYPESCRIPT
+                  </span>
+                </div>
+              </Card>
+            </CardSwap>
+          </div>
+          <div
+            id="bot"
+            ref={botRef}
+            className="w-full px-10 py-20 bg-black mt-80"
+          >
+            <span className="flex items-center gap-3 mb-20">
+              <BlurText
+                text="Chatbot"
+                delay={100}
+                animateBy="letters"
+                direction="top"
+                className="text-2xl lg:text-5xl font-semibold text-white text-center"
+              />
+              <motion.div
+                initial={{ width: "0%" }}
+                whileInView={{ width: "160px" }}
+                className="w-40 h-0.5 bg-muted-foreground mt-4"
+              />
+            </span>
+            <ChatBot />
+          </div>
+        </>
+      )}
+    </>
   );
 }

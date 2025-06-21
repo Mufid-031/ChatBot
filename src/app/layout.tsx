@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { GithubIcon, LinkedinIcon, MailIcon } from "lucide-react";
+import { Navbar } from "@/Components/Navbar";
+import SplashCursor from "@/Animations/SplashCursor/SplashCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +26,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black overflow-x-hidden`}
       >
+        <Navbar />
         {children}
+        <div className="flex flex-col items-center gap-4 fixed bottom-5 right-5 p-3 rounded-full ring-1 ring-gray-900">
+          <GithubIcon />
+          <LinkedinIcon />
+          <MailIcon />
+        </div>
+        <SplashCursor />
       </body>
     </html>
   );
