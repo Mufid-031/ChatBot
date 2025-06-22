@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { BiLogoTypescript } from "react-icons/bi";
 import { RiNextjsFill, RiReactjsFill, RiTailwindCssFill } from "react-icons/ri";
+import ScrambledText from "@/TextAnimations/ScrambledText/ScrambledText";
 
 export default function Home() {
   const [showMain, setShowMain] = useState<boolean>(false);
@@ -108,9 +109,16 @@ export default function Home() {
                   initial={{ width: "0%" }}
                   whileInView={{ width: "160px" }}
                   className="w-40 h-0.5 bg-muted-foreground mt-4"
+                  viewport={{ once: true }}
                 />
               </span>
-              <p className="text-muted-foreground">
+              <ScrambledText
+                radius={100}
+                duration={1.2}
+                speed={0.5}
+                scrambleChars={".:"}
+                style={{ fontSize: "1rem", margin: 0 }}
+              >
                 Chatbot untuk mata kuliah Information Retrieval (IR) ini
                 merupakan proyek yang dirancang untuk membantu pengguna dalam
                 mencari informasi dari sebuah dataset menggunakan pertanyaan
@@ -121,7 +129,7 @@ export default function Home() {
                 Proyek ini bertujuan untuk mengintegrasikan teori IR ke dalam
                 aplikasi nyata yang interaktif, serta memberikan pengalaman
                 pencarian informasi yang efisien dan intuitif bagi pengguna.
-              </p>
+              </ScrambledText>
               <span className="flex items-center gap-3">
                 <BlurText
                   text="Tech Stack"
@@ -134,13 +142,70 @@ export default function Home() {
                   initial={{ width: "0%" }}
                   whileInView={{ width: "80px" }}
                   className="w-20 h-0.5 bg-muted-foreground mt-6"
+                  viewport={{ once: true }}
                 />
               </span>
               <div className="flex items-center gap-4">
-                <RiReactjsFill className="w-10 h-10 text-blue-300" />
-                <RiNextjsFill className="w-10 h-10" />
-                <BiLogoTypescript className="w-10 h-10 text-blue-500" />
-                <RiTailwindCssFill className="w-10 h-10 text-cyan-300" />
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{
+                    scale: 1,
+                    transition: {
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <RiReactjsFill className="w-10 h-10 text-blue-300" />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{
+                    scale: 1,
+                    transition: {
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <RiNextjsFill className="w-10 h-10" />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{
+                    scale: 1,
+                    transition: {
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <BiLogoTypescript className="w-10 h-10 text-blue-500" />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{
+                    scale: 1,
+                    transition: {
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <RiTailwindCssFill className="w-10 h-10 text-cyan-300" />
+                </motion.div>
               </div>
             </div>
             <CardSwap
@@ -151,35 +216,26 @@ export default function Home() {
             >
               <Card className="border-4">
                 <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
-                  <RiNextjsFill />
                   Next JS
                 </h3>
                 <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-black">
-                  <span className="text-4xl font-extrabold text-transparent stroke-text">
-                    NEXT JS
-                  </span>
+                  <RiNextjsFill className="w-40 h-40" />
                 </div>
               </Card>
               <Card className="border-4">
                 <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
-                  <RiTailwindCssFill />
                   Tailwind CSS
                 </h3>
-                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-cyan-400">
-                  <span className="text-4xl font-extrabold text-transparent stroke-text">
-                    TAILWIND CSS
-                  </span>
+                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-black">
+                  <RiTailwindCssFill className="w-40 h-40 text-cyan-300" />
                 </div>
               </Card>
               <Card className="border-4">
                 <h3 className="px-2 py-3 bg-background border-b-2 border-white rounded-t-xl flex items-center gap-2">
-                  <BiLogoTypescript />
                   TypeScript
                 </h3>
-                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-blue-400">
-                  <span className="text-4xl font-extrabold text-transparent stroke-text">
-                    TYPESCRIPT
-                  </span>
+                <div className="w-full h-80 m-3 rounded-xl flex items-center justify-center bg-black">
+                  <BiLogoTypescript className="w-40 h-40 text-blue-500" />
                 </div>
               </Card>
             </CardSwap>
@@ -201,6 +257,7 @@ export default function Home() {
                 initial={{ width: "0%" }}
                 whileInView={{ width: "160px" }}
                 className="w-40 h-0.5 bg-muted-foreground mt-4"
+                viewport={{ once: true }}
               />
             </span>
             <ChatBot />
