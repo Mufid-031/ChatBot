@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
-        <div className="flex flex-col items-center gap-4 fixed bottom-5 right-5 p-3 rounded-full ring-1 ring-gray-900">
+        <div className="flex flex-col items-center gap-4 fixed bottom-5 right-5 p-3 rounded-full ring-1 ring-gray-900 z-20">
           <GithubIcon />
           <LinkedinIcon />
           <MailIcon />

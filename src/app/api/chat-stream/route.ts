@@ -1,3 +1,4 @@
+import { redis } from "@/lib/redis";
 import { NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -5,6 +6,14 @@ export const POST = async (req: NextRequest) => {
     const { messages, sessionId } = await req.json();
 
     const lastMessage = messages[messages.length - 1]?.content ?? "Halo";
+
+    const userMessage = {
+      role: "user",
+      content: lastMessage,
+    };
+
+    // Simpan pesan user ke Redis
+    await redis.rpush(sessionId, JSON.stringify(userMessage));
 
     const togetherResponse = await fetch(
       "https://api.together.xyz/v1/chat/completions",
@@ -31,6 +40,14 @@ export const POST = async (req: NextRequest) => {
     const content =
       data?.choices?.[0]?.message?.content ??
       "⚠️ (No valid response from model)";
+
+    const assistantMessage = {
+      role: "assistant",
+      content,
+    };
+
+    // Simpan balasan bot ke Redis
+    await redis.rpush(sessionId, JSON.stringify(assistantMessage));
 
     return new Response(
       JSON.stringify({

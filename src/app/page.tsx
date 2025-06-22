@@ -68,11 +68,11 @@ export default function Home() {
             ref={homeRef}
             style={{
               width: "100%",
-              height: "650px",
+              height: "750px",
               position: "relative",
             }}
           >
-            <div className="absolute top-[20%] left-1/2 transform -translate-x-1/2 flex flex-col gap-5 z-20 items-center w-full">
+            <div className="absolute top-[30%] left-1/2 transform -translate-x-1/2 flex flex-col gap-5 z-20 items-center w-full">
               <BlurText
                 text="Ahmad Mufid Risqi"
                 delay={100}

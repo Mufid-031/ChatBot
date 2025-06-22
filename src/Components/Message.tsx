@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { Bot, User } from "lucide-react";
+import { Bot, User, Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 interface MessageProps {
   content: string;
@@ -7,40 +10,77 @@ interface MessageProps {
 }
 
 export const Message = ({ content, isUserMessage }: MessageProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div
-      className={cn({
-        "bg-zinc-800": isUserMessage,
-        "bg-zinc-900/25": !isUserMessage,
+      className={cn("flex gap-4 group", {
+        "flex-row-reverse": isUserMessage,
       })}
     >
-      <div className="p-6">
-        <div className="max-w-3xl mx-auto flex items-start gap-2.5">
-          <div
-            className={cn(
-              "size-10 shrink-0 aspect-square rounded-full border border-zinc-700 bg-zinc-900 flex justify-center items-center",
-              {
-                "bg-blue-950 border-blue-700 text-zinc-200": isUserMessage,
-              }
-            )}
-          >
-            {isUserMessage ? (
-              <User className="size-5" />
-            ) : (
-              <Bot className="size-5 text-white" />
-            )}
-          </div>
+      {/* Avatar */}
+      <div
+        className={cn(
+          "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg",
+          {
+            "bg-gradient-to-r from-blue-500 to-purple-600": isUserMessage,
+            "bg-gradient-to-r from-emerald-500 to-teal-600": !isUserMessage,
+          }
+        )}
+      >
+        {isUserMessage ? (
+          <User className="w-5 h-5 text-white" />
+        ) : (
+          <Bot className="w-5 h-5 text-white" />
+        )}
+      </div>
 
-          <div className="flex flex-col ml-6 w-full">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                {isUserMessage ? "You" : "Website"}
-              </span>
+      {/* Message Content */}
+      <div
+        className={cn("flex-1 max-w-3xl", {
+          "flex justify-end": isUserMessage,
+        })}
+      >
+        <div
+          className={cn(
+            "relative px-4 py-3 rounded-2xl shadow-lg backdrop-blur-sm border transition-all duration-200 hover:shadow-xl",
+            {
+              "bg-white/10 text-white border-blue-400/30":
+                isUserMessage,
+              "bg-white/10 text-white border-white/20 hover:bg-white/15":
+                !isUserMessage,
+            }
+          )}
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1">
+              <div className="text-sm font-medium mb-1 opacity-80">
+                {isUserMessage ? "Anda" : "Assistant"}
+              </div>
+              <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                {content}
+              </div>
             </div>
 
-            <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
-              {content}
-            </p>
+            {!isUserMessage && (
+              <button
+                onClick={handleCopy}
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-white/10 rounded"
+                title="Salin pesan"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-green-400" />
+                ) : (
+                  <Copy className="w-4 h-4 text-gray-300" />
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>
