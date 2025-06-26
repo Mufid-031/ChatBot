@@ -62,7 +62,6 @@ const Page = async ({ params }: PageProps) => {
         <ChatWrapper
           sessionId={sessionId}
           initialMessages={initialMessages}
-          websiteUrl={reconstructedUrl}
         />
       </div>
     </div>
