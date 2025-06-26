@@ -14,6 +14,10 @@ export const ChatWrapper = ({ sessionId, initialMessages }: any) => {
 
     const newUserMessage = { role: "user", content: input };
     setMessages((prev: any) => [...prev, newUserMessage]);
+
+    // ⬇️ Tambahkan placeholder untuk asisten
+    setMessages((prev: any) => [...prev, { role: "assistant", content: "" }]);
+
     setInput("");
     setIsLoading(true);
 
@@ -30,7 +34,7 @@ export const ChatWrapper = ({ sessionId, initialMessages }: any) => {
 
     if (!res.ok || !res.body) {
       setMessages((prev: any) => [
-        ...prev,
+        ...prev.slice(0, -1), // hapus assistant placeholder
         { role: "assistant", content: "⚠️ Gagal menerima stream." },
       ]);
       setIsLoading(false);
@@ -47,12 +51,13 @@ export const ChatWrapper = ({ sessionId, initialMessages }: any) => {
 
       const chunk = decoder.decode(value, { stream: true });
 
-      // Parse hanya bagian "data: ..."
       const match = chunk.match(/^data: (.+)$/m);
       if (match) {
         try {
           const parsed = JSON.parse(match[1]);
           fullText += parsed.content;
+
+          // ⬇️ Gantikan pesan asisten terakhir dengan versi terbaru
           setMessages((prev: any) => [
             ...prev.slice(0, -1),
             { role: "assistant", content: fullText },
@@ -63,6 +68,7 @@ export const ChatWrapper = ({ sessionId, initialMessages }: any) => {
       }
     }
 
+    // ⚠️ Jika ingin persist: optional, fetch ulang message dari server
     setIsLoading(false);
   };
 
