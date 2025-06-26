@@ -1,7 +1,7 @@
 "use client";
 
 import { Send, Loader2 } from "lucide-react";
-import type { useChat } from "ai/react";
+import type { useChat } from "@ai-sdk/react";
 
 type HandleInputChange = ReturnType<typeof useChat>["handleInputChange"];
 type HandleSubmit = ReturnType<typeof useChat>["handleSubmit"];
@@ -24,14 +24,23 @@ export const ChatInput = ({
 }: ChatInputProps) => {
   return (
     <div className="p-4">
-      <form onSubmit={handleSubmit} className="flex items-end gap-3">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (input.trim() && !isLoading) {
+            handleSubmit();
+            setInput("");
+          }
+        }}
+        className="flex items-end gap-3"
+      >
         <div className="flex-1 relative">
           <textarea
             className="w-full px-4 py-3 pr-12 rounded-2xl bg-white/10 backdrop-blur-sm text-white placeholder:text-gray-400 outline-none border border-white/20 focus:border-blue-400/50 focus:bg-white/15 transition-all duration-200 resize-none min-h-[52px] max-h-32"
             placeholder="Tanyakan sesuatu tentang website ini..."
             value={input}
             onChange={handleInputChange}
-            onKeyDown={(e) => {
+            onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 if (input.trim() && !isLoading) {

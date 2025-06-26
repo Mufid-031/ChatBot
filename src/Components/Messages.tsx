@@ -1,4 +1,4 @@
-import type { Message as TMessage } from "ai/react";
+import type { Message as TMessage } from "@ai-sdk/react";
 import { Message } from "./Message";
 import { MessageSquare } from "lucide-react";
 import { LoadingMessage } from "./LoadingMessage";
